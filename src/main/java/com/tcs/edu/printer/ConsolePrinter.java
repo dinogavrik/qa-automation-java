@@ -1,3 +1,5 @@
+package com.tcs.edu.printer;
+
 /**
  * The class contains a set of methods that output
  * information to the console
