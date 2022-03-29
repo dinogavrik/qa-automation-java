@@ -8,17 +8,15 @@ import java.time.Instant;
  *
  * @author Gavrikova irina
  */
-
 public class TimestampMessageDecorator {
     /**
      * Method for calculating the current date and
      * outputting the transmitted message and the received date to the console
      *
      * @param message parameter output to the console
+     * @return decorate message with current date
      */
-
-    public static void decorate(String message) {
-        Instant date = Instant.now();
-        System.out.println(date + " " + message);
+    public static String decorate(String message) {
+        return Instant.now() + " " + message;
     }
 }
