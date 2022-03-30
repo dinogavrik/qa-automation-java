@@ -24,9 +24,8 @@ public class TimestampMessageDecorator {
      * @return decorate message with current date and counter
      */
     public static String decorate(String message) {
-        String decoratedMessage;
         messageCount++;
-        decoratedMessage = messageCount + " " + Instant.now() + " " + message;
+        var decoratedMessage = messageCount + " " + Instant.now() + " " + message;
         return decoratedMessage;
     }
 }
