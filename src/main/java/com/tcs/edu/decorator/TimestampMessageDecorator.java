@@ -1,4 +1,4 @@
-package com.tcs.edu.decorator;
+ package com.tcs.edu.decorator;
 
 import java.time.Instant;
 
@@ -10,15 +10,23 @@ import java.time.Instant;
  */
 public class TimestampMessageDecorator {
     /**
-     * Method for calculating the current date and
-     * outputting the transmitted message and the received date to the console
+     * Variable with the number of displayed messages
+     */
+    private static int messageCount = 0;
+    /**
+     * Method for calculating the current date, outputting
+     * the transmitted message, the received date and
+     * the counter of displayed messages to the console
+     *
+     * Side effect on global messageCount
      *
      * @param message parameter output to the console
-     * @return decorate message with current date
+     * @return decorate message with current date and counter
      */
     public static String decorate(String message) {
         String decoratedMessage;
-        decoratedMessage = Instant.now() + " " + message;
+        messageCount++;
+        decoratedMessage = messageCount + " " + Instant.now() + " " + message;
         return decoratedMessage;
     }
 }
