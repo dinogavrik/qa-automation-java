@@ -6,7 +6,6 @@ package com.tcs.edu.printer;
  *
  * @author Gavrikova Irina
  */
-
 public class ConsolePrinter {
 
     /**
