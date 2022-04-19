@@ -14,13 +14,17 @@ public class SeverityLevelDecorator {
      * @param severity importance level
      * @return the importance level of the displayed message
      */
-    public static String mapSeverity (Severity severity) {
-        String SeverityString = null;
+    public static String mapSeverity(Severity severity) {
+        //String SeverityString = null;
         switch (severity) {
-            case MAJOR: SeverityString = MAJOR.getLevel(); break;
-            case MINOR: SeverityString = MINOR.getLevel(); break;
-            case REGULAR: SeverityString = REGULAR.getLevel(); break;
+            case MAJOR:
+                return MAJOR.getLevel();
+            case MINOR:
+                return MINOR.getLevel();
+            case REGULAR:
+                return REGULAR.getLevel();
+            default:
+                return "Уровень не найден";
         }
-        return SeverityString;
     }
 }
