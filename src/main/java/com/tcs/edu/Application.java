@@ -1,15 +1,12 @@
 package com.tcs.edu;
 
-import static com.tcs.edu.decorator.Severity.*;
+import static com.tcs.edu.enumeration.MessageOrder.ASC;
+import static com.tcs.edu.enumeration.MessageOrder.DESC;
+import static com.tcs.edu.enumeration.Severity.*;
 import static com.tcs.edu.service.MessageService.process;
 
 class Application {
     public static void main(String[] args) {
-        process(MINOR,"Hello world!", "Hi!", "Aloha");
-        process(REGULAR,"Hello world!", null);
-        process(REGULAR,null);
-        process(MINOR,"Hello world!", null, "Ola", "Hola!");
-        process(MAJOR,"Hello world!", "Hallo", null, "Guten Tag");
-        process(REGULAR, null, null);
+        process(REGULAR, DESC, "Hello world! 1", "Hello world! 2", "Hello world! 3", "Hello world! 4");
     }
 }

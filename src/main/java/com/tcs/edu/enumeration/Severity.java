@@ -1,4 +1,4 @@
-package com.tcs.edu.decorator;
+package com.tcs.edu.enumeration;
 
 /**
  * Importance levels that can be used
