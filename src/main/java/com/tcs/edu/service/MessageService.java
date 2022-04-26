@@ -16,40 +16,32 @@ import static com.tcs.edu.printer.ConsolePrinter.print;
  */
 public class MessageService {
 
+    private static final MessageOrder DEFAULT_ORDER = MessageOrder.ASC;
+    private static final Doubling DEFAULT_DOUBLING = Doubling.DOUBLES;
+
     /**
      * Method for assembling the output message
+     * @see #process(Severity, MessageOrder, String, String...)
      *
      * @param level    message significance level
      * @param message  transmitted message
      * @param messages transmitted messages
      */
     public static void process(Severity level, String message, String... messages) {
-        if (messages == null) {
-            messages = new String[]{};
-        }
-        List<String> allMess = new ArrayList<>(Arrays.asList(messages));
-        allMess.add(0, message);
-        for (String mess : allMess) {
-            if (mess != null) {
-                print(PaginationDecorator.decorate(String.format("%s %s", decorate(mess), level.getLevel())));
-            }
-        }
+        process(level, DEFAULT_ORDER, message, messages);
     }
 
     /**
      * Method for assembling a message with sorting
-     *
+     * @see #process(Severity, MessageOrder, Doubling, String, String...)
+     * 
      * @param level    message significance level
      * @param order    sort
      * @param message  transmitted message
      * @param messages transmitted messages
      */
     public static void process(Severity level, MessageOrder order, String message, String... messages) {
-        for (String mess : sortMessages(order, message, messages)) {
-            if (mess != null) {
-                print(PaginationDecorator.decorate(String.format("%s %s", decorate(mess), level.getLevel())));
-            }
-        }
+        process(level, order, DEFAULT_DOUBLING, message, messages);
     }
 
     /**
@@ -63,6 +55,7 @@ public class MessageService {
      */
     public static void process(
             Severity level, MessageOrder order, Doubling doubling, String message, String... messages) {
+
         var orderMess = sortMessages(order, message, messages);
 
         for (String mess : searchDuplicates(orderMess, doubling)) {
@@ -115,6 +108,7 @@ public class MessageService {
                 for (int j = 0; j < doublingMess.length; j++) {
                     if (Objects.equals(doublingMess[j], allMess.get(i))) {
                         isDoubling = true;
+                        break;
                     }
                 }
                 if (!isDoubling) {
