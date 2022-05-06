@@ -1,6 +1,8 @@
 package com.tcs.edu.decorator;
 
-import static com.tcs.edu.decorator.Severity.*;
+import com.tcs.edu.enumeration.Severity;
+
+import static com.tcs.edu.enumeration.Severity.*;
 
 /**
  * Class for calculating the level of importance
@@ -15,7 +17,6 @@ public class SeverityLevelDecorator {
      * @return the importance level of the displayed message
      */
     public static String mapSeverity(Severity severity) {
-        //String SeverityString = null;
         switch (severity) {
             case MAJOR:
                 return MAJOR.getLevel();
