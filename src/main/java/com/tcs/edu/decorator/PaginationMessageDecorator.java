@@ -8,7 +8,7 @@ import static java.lang.String.format;
  *
  * @author Gavrikova Irina
  */
-public class PaginationDecorator {
+public class PaginationMessageDecorator implements MessageDecorator {
     /**
      * Variable with the number of displayed messages
      */
@@ -26,7 +26,7 @@ public class PaginationDecorator {
      * @param message transmitted message
      * @return decorated message
      */
-    public static String decorate(String message) {
+    public String decorate(String message) {
         messageCount++;
         String template = "%d %s";
         if (messageCount % PAGE_SIZE == 0) {

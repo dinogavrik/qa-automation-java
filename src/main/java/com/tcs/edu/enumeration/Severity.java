@@ -27,7 +27,7 @@ public enum Severity {
     /**
      * Message level
      */
-    private String level;
+    private final String level;
 
     /**
      * Constructor
