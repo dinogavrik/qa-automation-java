@@ -70,7 +70,7 @@ public class OrderedDistinctedMessageService implements MessageService {
         var orderMess = sortMessages(order, message, messages);
 
         for (Message mess : searchDuplicates(orderMess, doubling)) {
-            if (mess != null) {
+            if (mess != null && mess.getBody() != null) {
                 printer.print(
                         messageDecorator.decorate(format("%s %s", mess.getBody(), mess.getSeverityLevel().getLevel()))
                 );

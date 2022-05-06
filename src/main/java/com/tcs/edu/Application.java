@@ -23,11 +23,14 @@ class Application {
         service.process(
                 ASC,
                 DISTINCT,
-                new Message(MAJOR, "Hello world! 1"),
-                new Message(MINOR, "Hello world! 2"),
-                new Message(MINOR, "Hello world! 3"),
-                new Message(REGULAR, "Hello world! 3"),
-                new Message(REGULAR, "Hello world! 3"));
-
+                new Message(REGULAR, "Hello0"),
+                new Message(MAJOR, "Hello1"),
+                new Message(MINOR, "Hello2"),
+                new Message(MINOR, "Hello2"),
+                new Message(REGULAR, "Hello2"),
+                null,
+                new Message(REGULAR, null),
+                new Message(MINOR, "Hello5")
+        );
     }
 }
