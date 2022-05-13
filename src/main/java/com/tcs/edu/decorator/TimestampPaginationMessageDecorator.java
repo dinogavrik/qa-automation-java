@@ -17,6 +17,6 @@ public class TimestampPaginationMessageDecorator implements MessageDecorator {
         MessageDecorator timestampDecorator = new TimestampMessageDecorator();
         MessageDecorator paginationDecorator = new PaginationMessageDecorator();
 
-        return timestampDecorator.decorate(paginationDecorator.decorate(decorateMessages));
+        return paginationDecorator.decorate(timestampDecorator.decorate(decorateMessages));
     }
 }
