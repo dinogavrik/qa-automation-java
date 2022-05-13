@@ -6,7 +6,7 @@ package com.tcs.edu.printer;
  *
  * @author Gavrikova Irina
  */
-public class ConsolePrinter {
+public class ConsolePrinter implements Printer {
 
     /**
      * The method prints the received
@@ -14,7 +14,7 @@ public class ConsolePrinter {
      *
      * @param message parameter output to the console
      */
-    public static void print(String message) {
+    public void print(String message) {
         System.out.println(message);
     }
 }
