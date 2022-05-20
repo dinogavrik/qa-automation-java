@@ -6,10 +6,7 @@ import com.tcs.edu.enumeration.Doubling;
 import com.tcs.edu.enumeration.MessageOrder;
 import com.tcs.edu.printer.Printer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static com.tcs.edu.enumeration.MessageOrder.DESC;
 import static java.lang.String.format;
@@ -18,7 +15,7 @@ import static java.lang.String.format;
 /**
  * The class responsible for the final assembly of the message
  */
-public class OrderedDistinctedMessageService implements MessageService {
+public class OrderedDistinctedMessageService extends ValidatedService implements MessageService {
 
     private static final MessageOrder DEFAULT_ORDER = MessageOrder.ASC;
     private static final Doubling DEFAULT_DOUBLING = Doubling.DOUBLES;
@@ -67,13 +64,15 @@ public class OrderedDistinctedMessageService implements MessageService {
      * @param messages transmitted messages
      */
     public void process(MessageOrder order, Doubling doubling, Message message, Message... messages) {
-        var orderMess = sortMessages(order, message, messages);
+        if (super.isArgsValid(order, doubling)) {
+            var orderMess = sortMessages(order, message, messages);
 
-        for (Message mess : searchDuplicates(orderMess, doubling)) {
-            if (mess != null && mess.getBody() != null) {
-                printer.print(
-                        messageDecorator.decorate(format("%s %s", mess.getBody(), mess.getSeverityLevel().getLevel()))
-                );
+            for (Message mess : searchDuplicates(orderMess, doubling)) {
+                if (mess != null && mess.getBody() != null) {
+                    printer.print(
+                            messageDecorator.decorate(format("%s %s", mess.getBody(), mess.getSeverityLevel().getLevel()))
+                    );
+                }
             }
         }
     }
@@ -112,27 +111,12 @@ public class OrderedDistinctedMessageService implements MessageService {
      * @return depending on the parameter - messages with or without duplicates
      */
     private static List<Message> searchDuplicates(List<Message> allMess, Doubling doubling) {
-
         if (doubling == Doubling.DISTINCT) {
-            Message[] doublingMess = new Message[allMess.size()];
-            int k = 0;
-            boolean isDoubling = false;
-            for (Message mess : allMess) {
-                for (Message message : doublingMess) {
-                    if (message != null && mess != null && Objects.equals(message.getBody(), mess.getBody())) {
-                        isDoubling = true;
-                        break;
-                    }
-                }
-                if (!isDoubling) {
-                    doublingMess[k] = mess;
-                    k++;
-                }
-                isDoubling = false;
-            }
-            allMess = Arrays.asList(doublingMess);
+            LinkedHashSet<Message> doublingMess = new LinkedHashSet<>(allMess);
+            allMess = new ArrayList<>(doublingMess);
         }
         return allMess;
     }
 }
+
 
