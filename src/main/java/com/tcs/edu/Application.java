@@ -6,49 +6,102 @@ import com.tcs.edu.enumeration.Doubling;
 import com.tcs.edu.printer.ConsolePrinter;
 import com.tcs.edu.service.MessageService;
 import com.tcs.edu.service.OrderedDistinctedMessageService;
+import com.tcs.edu.service.ProcessException;
 
 import static com.tcs.edu.enumeration.Doubling.DISTINCT;
 import static com.tcs.edu.enumeration.Doubling.DOUBLES;
-import static com.tcs.edu.enumeration.MessageOrder.ASC;
 import static com.tcs.edu.enumeration.MessageOrder.DESC;
 import static com.tcs.edu.enumeration.Severity.*;
+import static java.lang.String.format;
 
 class Application {
     public static void main(String[] args) {
+//        service.process(
+//                DESC,
+//                DOUBLES,
+//                new Message(REGULAR, "Hello0"),
+//                new Message(MAJOR, "Hello1"),
+//                new Message(MINOR, "Hello2"),
+//                new Message(MINOR, "Hello5"),
+//                new Message(MINOR, ""),
+//                new Message(REGULAR, "Hello2"),
+//                null,
+//                new Message(REGULAR, null)
+//        );
+//
+//        System.out.println("Вывод объекта: " + new Message(REGULAR, "Hello"));
+//        System.out.println(
+//                "Сравнение объектов (одинаковые сообщения): "
+//                        + new Message(REGULAR, "Hello").equals(new Message(REGULAR, "Hello")));
+//        System.out.println(
+//                "Сравнение объектов (разные сообщения): "
+//                        + new Message(REGULAR, "Hello2").equals(new Message(REGULAR, "Helloооооооо")));
+//        System.out.println("Хэш: " + new Message(REGULAR, "Hello").hashCode());
+//        System.out.println("Хэш: " + new Message(REGULAR, "Hello2").hashCode());
+//        System.out.println("Хэш: " + new Message(REGULAR, "Helloооооооо").hashCode());
+//        System.out.println(
+//                new Message(REGULAR, "Helloооооооо").hashCode() == new Message(REGULAR, "Hello").hashCode());
 
-        MessageService service = new OrderedDistinctedMessageService(
-                new TimestampPaginationMessageDecorator(),
-                new ConsolePrinter()
-        );
 
-        service.process(
-                DESC,
-                DISTINCT,
-                new Message(REGULAR, "Hello0"),
-                new Message(MAJOR, "Hello1"),
-                new Message(MINOR, "Hello2"),
-                new Message(MINOR, "Hello5"),
-                new Message(MINOR, "Hello2"),
-                new Message(REGULAR, "Hello2"),
-                null,
-                new Message(REGULAR, null),
-                new Message(MINOR, "Hello5")
-
-        );
-
-        Message message1 = new Message(REGULAR, "Hello");
-        Message message2 = new Message(REGULAR, "Hello");
-
-        Message message3 = new Message(REGULAR, "Hello2");
-        Message message4 = new Message(REGULAR, "Helloооооооо");
-
-        System.out.println("Вывод объекта: " + new Message(REGULAR, "Hello"));
-        System.out.println("Сравнение объектов (одинаковые сообщения): " + message1.equals(message2));
-        System.out.println("Сравнение объектов (разные сообщения): " + message3.equals(message4));
-        System.out.println("Хэш: " + message1.hashCode());
-        System.out.println("Хэш: " + message2.hashCode());
-        System.out.println("Хэш: " + message3.hashCode());
-        System.out.println("Хэш: " + message4.hashCode());
-        System.out.println(message4.hashCode() == message1.hashCode());
+        checkValidArgument();
+        checkInvalidArgumentOrder();
+        checkInvalidArgumentDoubling();
     }
+
+    private static MessageService service = new OrderedDistinctedMessageService(
+            new TimestampPaginationMessageDecorator(),
+            new ConsolePrinter());
+
+    public static void checkValidArgument() {
+        exceptionAssert(
+                ProcessException.class,
+                () -> service.process(DESC, DISTINCT, new Message(MINOR, "Hello")));
+    }
+
+    public static void checkInvalidArgumentOrder() {
+                exceptionAssert(
+                        ProcessException.class,
+                        () -> service.process(null, DISTINCT, new Message(MINOR, "Hello")));
+    }
+
+    public static void checkInvalidArgumentDoubling() {
+        exceptionAssert(
+                ProcessException.class,
+                () -> service.process(DESC, (Doubling) null, new Message(MINOR, "Hello")));
+    }
+
+
+    public static <T extends Exception> T exceptionAssert(Class<T> exceptionClass, Runnable function) {
+        T exception = null;
+        boolean isExp = true;
+        try {
+            function.run();
+        } catch (Exception e) {
+            if (exceptionClass.isInstance(e)) {
+                System.out.println(format("%s %s %s %s",
+                        "Проверка в ",
+                        Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        "выполнена успешно, было выбрашено ожидаемое исключение",
+                        exceptionClass.getName()));
+                exception = (T) e;
+            } else {
+                System.out.println(format("%s %s %s %s",
+                        "Проверка ",
+                        Thread.currentThread().getStackTrace()[2].getMethodName(),
+                        "выполнена неуспешно. Ожиидаемое исключение не найдено. Было выброшено другое исключение:",
+                        e.getClass().getName()));
+            }
+            isExp = false;
+        }
+
+        if (isExp) System.out.println("Проверка в "
+                + Thread.currentThread().getStackTrace()[2].getMethodName()
+                + "выполнена неуспешно. Эксепшн не был выброшен");
+
+        return exception;
+
+    }
+
 }
+
+

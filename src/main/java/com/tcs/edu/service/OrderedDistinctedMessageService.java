@@ -8,6 +8,7 @@ import com.tcs.edu.printer.Printer;
 
 import java.util.*;
 
+import static com.tcs.edu.enumeration.MessageOrder.ASC;
 import static com.tcs.edu.enumeration.MessageOrder.DESC;
 import static java.lang.String.format;
 
@@ -64,7 +65,12 @@ public class OrderedDistinctedMessageService extends ValidatedService implements
      * @param messages transmitted messages
      */
     public void process(MessageOrder order, Doubling doubling, Message message, Message... messages) {
-        if (super.isArgsValid(order, doubling)) {
+        try {
+            super.isArgsValid(order, doubling, message, messages);
+        } catch (IllegalArgumentException e) {
+            throw new ProcessException("Перадан невалидный параметр", e);
+        }
+
             var orderMess = sortMessages(order, message, messages);
 
             for (Message mess : searchDuplicates(orderMess, doubling)) {
@@ -75,7 +81,6 @@ public class OrderedDistinctedMessageService extends ValidatedService implements
                 }
             }
         }
-    }
 
     /**
      * Method to sort the array of messages
@@ -92,15 +97,16 @@ public class OrderedDistinctedMessageService extends ValidatedService implements
         List<Message> allMess = new ArrayList<>(Arrays.asList(messages));
         allMess.add(0, message);
 
-        if (order == DESC) {
-            Message[] sortMess = new Message[allMess.size()];
-            for (int i = allMess.size() - 1; i >= 0; i--) {
-                sortMess[i] = allMess.get(allMess.size() - 1 - i);
-            }
-            allMess = Arrays.asList(sortMess);
+        if (order == ASC) {
+            return  allMess;
         }
 
-        return allMess;
+        Message[] sortMess = new Message[allMess.size()];
+        for (int i = allMess.size() - 1; i >= 0; i--) {
+            sortMess[i] = allMess.get(allMess.size() - 1 - i);
+        }
+
+        return Arrays.asList(sortMess);
     }
 
     /**
@@ -111,11 +117,11 @@ public class OrderedDistinctedMessageService extends ValidatedService implements
      * @return depending on the parameter - messages with or without duplicates
      */
     private static List<Message> searchDuplicates(List<Message> allMess, Doubling doubling) {
-        if (doubling == Doubling.DISTINCT) {
-            LinkedHashSet<Message> doublingMess = new LinkedHashSet<>(allMess);
-            allMess = new ArrayList<>(doublingMess);
+        if (doubling == Doubling.DOUBLES) {
+            return allMess;
         }
-        return allMess;
+        LinkedHashSet<Message> doublingMess = new LinkedHashSet<>(allMess);
+        return new ArrayList<>(doublingMess);
     }
 }
 
