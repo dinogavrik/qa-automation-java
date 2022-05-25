@@ -4,7 +4,7 @@ package com.tcs.edu.service;
  * Contains a set of common
  * methods for validation
  */
-public abstract class ValidatedService {
+public abstract class ValidatedService extends ProcessException {
 
     /**
      * Method for validating incoming arguments
