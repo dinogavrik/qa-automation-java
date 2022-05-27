@@ -20,18 +20,4 @@ public abstract class ValidatedService extends ProcessException {
         }
         return true;
     }
-
-    /**
-     * Method for validating incoming arguments
-     * @param object object
-     * @param name name argument
-     * @throws IllegalArgumentException for invalid arguments
-     * @return exception or successful validation
-     */
-    boolean isArgsValid(Object object, String name) {
-        if (object == null) {
-            throw new IllegalArgumentException("Parameter '" + name + "' is null");
-        }
-        return true;
-    }
 }
