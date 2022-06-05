@@ -1,8 +1,10 @@
 package com.tcs.edu.domain;
 
 import com.tcs.edu.enumeration.Severity;
+import com.tcs.edu.service.ProcessException;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * DTO for entity message
@@ -18,18 +20,39 @@ public class Message {
      */
     private final String body;
 
+
+    private UUID id;
+
+
     /**
      * Constructor
+     *
      * @param severityLevel message level
-     * @param body message
+     * @param body          message
      */
+
+
     public Message(Severity severityLevel, String body) {
+        try {
+            isArgsValid(severityLevel, body);
+        } catch (IllegalArgumentException e) {
+            throw new ProcessException("Переданы невалидные аргументы", e);
+        }
+
         this.severityLevel = severityLevel;
         this.body = body;
     }
 
+    public Message setId(UUID id) {
+        this.id = id;
+        return this;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
     /**
-     *
      * @return Getting message level
      */
     public Severity getSeverityLevel() {
@@ -38,6 +61,7 @@ public class Message {
 
     /**
      * Getting message body
+     *
      * @return message body
      */
     public String getBody() {
@@ -60,9 +84,22 @@ public class Message {
 
     @Override
     public String toString() {
-        return "Message{" +
-                "severityLevel=" + severityLevel +
-                ", body='" + body + '\'' +
-                '}';
+        return
+                "{id= " +
+                        id +
+                        ", severityLevel= " + severityLevel +
+                        ", body='" + body + '\'' +
+                        '}';
     }
+
+    private boolean isArgsValid(Object... objects) {
+        for (Object object : objects) {
+            if (object == null) {
+                throw new IllegalArgumentException("Оne or all parameters are null");
+            }
+        }
+        return true;
+    }
+
+
 }
