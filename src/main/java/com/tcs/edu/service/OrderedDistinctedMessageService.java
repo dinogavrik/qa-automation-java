@@ -2,7 +2,6 @@ package com.tcs.edu.service;
 
 import com.tcs.edu.domain.Message;
 import com.tcs.edu.enumeration.Severity;
-import com.tcs.edu.repository.HashMapMessageRepository;
 import com.tcs.edu.repository.MessageRepository;
 
 import java.util.Collection;
@@ -14,7 +13,11 @@ import java.util.UUID;
  */
 public class OrderedDistinctedMessageService extends ValidatedService implements MessageService {
 
-    private final MessageRepository messageRepository = new HashMapMessageRepository();
+    private final MessageRepository messageRepository;
+
+    public OrderedDistinctedMessageService(MessageRepository messageRepository) {
+        this.messageRepository = messageRepository;
+    }
 
     @Override
     public UUID create(Message message) {

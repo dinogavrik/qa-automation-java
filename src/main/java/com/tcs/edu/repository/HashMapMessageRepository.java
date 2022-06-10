@@ -64,4 +64,10 @@ public class HashMapMessageRepository implements MessageRepository {
         return messages.remove(id);
     }
 
+    @Override
+    public String toString() {
+        return "HashMapMessageRepository{" +
+                "messages=" + messages +
+                '}';
+    }
 }

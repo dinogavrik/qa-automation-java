@@ -11,47 +11,47 @@ import static com.tcs.edu.enumeration.Severity.*;
 
 class Application {
     public static void main(String[] args) {
-        MessageService service = new OrderedDistinctedMessageService();
-        UUID randomId = UUID.randomUUID();
-
-        UUID messageId  = service.create(new Message(MINOR, "hello1"));
-        service.create(new Message(REGULAR, "hello2"));
-        service.create(new Message(REGULAR, "hello1"));
-
-        Message messageById = service.getById(messageId);
-        System.out.println("Соообщение по переданному ID " + messageById);
-        System.out.println("__________");
-
-        Collection<Message> getAll = service.get();
-        System.out.println("Все сообщения: " + getAll);
-        System.out.println("__________");
-
-        Collection<Message> getBySeverity = service.get(REGULAR);
-        System.out.println("Сообщения, где severity = regular " + getBySeverity);
-        System.out.println("__________");
-
-        Collection<Message> getByBody= service.get("hello1");
-        System.out.println("Сообщения, где body = hello1 " + getByBody);
-        System.out.println("__________");
-
-        Collection<Message> getBySeverityAndBody= service.get(REGULAR, "hello2");
-        System.out.println("Сообщения, где body = hello2 и severity = Regular " + getBySeverityAndBody);
-        System.out.println("__________");
-
-        System.out.println("=============================================");
-        Message messageUpdate = new Message(REGULAR, "UpdateMessage");
-        messageUpdate.setId(messageId);
-        Message update =  service.put(messageUpdate);
-        System.out.println("[Positive] Это сообщение было изменено: " + update);
-        Message update2 =  service.put(new Message(MAJOR, "No"));
-        System.out.println("[Negative] Это сообщение было изменено: " + update2);
-
-        System.out.println("=============================================");
-        UUID idMess = service.create(new Message(MINOR, "Hello"));
-        Message deletedMessage = service.delete(idMess);
-        System.out.println("[Positive] Эта запись была удалена: " + deletedMessage);
-        Message deletedMessageNonexistentId = service.delete(randomId);
-        System.out.println("[Negative] Эта запись была удалена: " + deletedMessageNonexistentId);
+//        MessageService service = new OrderedDistinctedMessageService();
+//        UUID randomId = UUID.randomUUID();
+//
+//        UUID messageId  = service.create(new Message(MINOR, "hello1"));
+//        service.create(new Message(REGULAR, "hello2"));
+//        service.create(new Message(REGULAR, "hello1"));
+//
+//        Message messageById = service.getById(messageId);
+//        System.out.println("Соообщение по переданному ID " + messageById);
+//        System.out.println("__________");
+//
+//        Collection<Message> getAll = service.get();
+//        System.out.println("Все сообщения: " + getAll);
+//        System.out.println("__________");
+//
+//        Collection<Message> getBySeverity = service.get(REGULAR);
+//        System.out.println("Сообщения, где severity = regular " + getBySeverity);
+//        System.out.println("__________");
+//
+//        Collection<Message> getByBody= service.get("hello1");
+//        System.out.println("Сообщения, где body = hello1 " + getByBody);
+//        System.out.println("__________");
+//
+//        Collection<Message> getBySeverityAndBody= service.get(REGULAR, "hello2");
+//        System.out.println("Сообщения, где body = hello2 и severity = Regular " + getBySeverityAndBody);
+//        System.out.println("__________");
+//
+//        System.out.println("=============================================");
+//        Message messageUpdate = new Message(REGULAR, "UpdateMessage");
+//        messageUpdate.setId(messageId);
+//        Message update =  service.put(messageUpdate);
+//        System.out.println("[Positive] Это сообщение было изменено: " + update);
+//        Message update2 =  service.put(new Message(MAJOR, "No"));
+//        System.out.println("[Negative] Это сообщение было изменено: " + update2);
+//
+//        System.out.println("=============================================");
+//        UUID idMess = service.create(new Message(MINOR, "Hello"));
+//        Message deletedMessage = service.delete(idMess);
+//        System.out.println("[Positive] Эта запись была удалена: " + deletedMessage);
+//        Message deletedMessageNonexistentId = service.delete(randomId);
+//        System.out.println("[Negative] Эта запись была удалена: " + deletedMessageNonexistentId);
 
         //        service.process(
 //                DESC,
